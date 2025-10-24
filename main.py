@@ -1,6 +1,12 @@
 # import
+import os
 import time
 import sys
+
+if os.name == "nt":
+    import ctypes
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
 # Color codes
 red = "\033[31m"
@@ -167,12 +173,12 @@ def bathroom_hide(): # when ur in the bathroom and u gotta hide to dont die
                 print(f"\n{white}You tried to hide behind the body in the corner, you found out where the smell's comming from.")
                 print(f"{white}After all he didn't see you thinking it was just another body")
 
-                print(f"\n{green}Now that he's gone you realise that's a shovel inside of the body")
+                print(f"\n{green}Now that he's gone you realise there's a shovel inside of the body")
 
 
                 shovel_input = ""
                 while shovel_input not in ['y', 'yes', 'n', 'no']:
-                    shovel_input = input(f"\n{cyan}wanna take it? (y/n or yes/no): ").lower()
+                    shovel_input = input(f"\n{cyan}Wanna take it? (y/n or yes/no): ").lower()
                     
                     if shovel_input == 'y' or shovel_input == 'yes':
                         inventory.append("shovel")
@@ -204,7 +210,7 @@ def back_house(): # u can to go behind the house to make other ends
 
         if choice == '1':
             if "shovel" in inventory:
-                print(f"\n{white}You finally can to see where this cave gonna let you &&&")
+                inside_stable() # inside of the stable after digging the hole outside
             else:
                 print(f"{white}You walked around the cave looking for a hole to you pass through, but seems like you gonna need a shovel")
         elif choice == '2':
@@ -215,6 +221,51 @@ def back_house(): # u can to go behind the house to make other ends
             game()
         else:
             print(f"\n{red}Invalid choice, please select between 1 and 4.")
+
+def inside_stable(): # inside of the stable
+    clean_terminal() # itll restart the terminal
+
+    print(f"{blue}Inside of the stable\n")
+
+    print(f"\n{white}You finally can to see where this cave gonna let you. While you were digging the hole you got inside of the stable.")
+    print(f"\n{green}You can to see there's only old weapons inside that looks really old, but thats some knifes on the talbe.")
+
+    while True:
+        print(f"\n{cyan}1. table")
+        print(f"{cyan}2. weapons")
+        print(f"{cyan}3. inventroy")
+        print(f"{cyan}4. come back")
+        
+        choice = input(f"{cyan}What do you wanna do (1-4):")
+
+        if choice == '1':
+            if "knife" in inventory:
+                print(f"\n{white}You went back to the table but you all of the knifes're old, you already took the best one")
+            else:
+                print(f"\n{green}You walked in front of the table and there's alot of different knifes")
+
+
+                knife_choice = ""
+                while knife_choice not in ['y', 'yes', 'n', 'no']:
+                    knife_choice = input(f"\n{cyan}Would you like to take a knife? ('y/n' or 'yes/no'): ").lower()
+                    
+                    if knife_choice == 'y' or knife_choice == 'yes':
+                        print(f"\n{white}You took the knife that looks ok, because all of the others looks like it's about to break")
+                        inventory.append("knife")
+                    elif knife_choice == 'n' or knife_choice == 'no':
+                        print(f"\n{white}You deside to dont take the knife")
+                    else:
+                        print(f"\n{red}Only 'y/n' or 'yes/no'")
+
+        elif choice == '2':
+           print(f"\n{white}You went to cheack if there's at least one weapon working and any of them are...")
+        elif choice == '3':
+            show_inventory()
+        elif choice == '4':
+            back_house()
+        else:
+            print(f"{red}Invalid choice, please select between 1 and 4.")
+                    
 
 def game():
     cursor_hidden()
@@ -256,9 +307,9 @@ def game():
         elif choice == '6':
             back_house()
         elif choice == '7':
-            print(f"{red}You quit the game. Goodbye!")
+            print(f"\n{red}You quit the game. Goodbye!")
             print("\033[?25h")
-            break  # End the game
+            sys.exit()  # End the game
         else:
             print(f"{red}Invalid choice, please select between 1 and 7.")
 
