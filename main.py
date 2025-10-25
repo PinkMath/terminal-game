@@ -18,6 +18,8 @@ cyan = "\033[36m"
 white = "\033[37m"
 reset = "\033[0m"
 
+# inventory/a counter to see if u went to the place
+went = []
 inventory = []
 
 def cursor_hidden():
@@ -47,10 +49,13 @@ def inside_house(): # After entering inside the house through the window
         print(f"{cyan}4. Inventory")
         print(f"{cyan}5. come back")
 
-        choice = input(f"{cyan}Enter your choice (1-3): ")
+        choice = input(f"{cyan}Enter your choice (1-5): ")
 
         if choice == '1':
-            print(f"\n{white}While you were going up the stairs, you heard footsteps. Maybe it's not a good idea to go up there...")
+            if "bathroom" in went:
+                second_floor()
+            else:
+                print(f"\n{white}While you were going up the stairs, you heard footsteps. Maybe it's not a good idea to go up there...")
         elif choice == '2':
 
             if "gas mask" in inventory:
@@ -67,29 +72,60 @@ def inside_house(): # After entering inside the house through the window
         else:
             print(f"{red}Invalid choice, please select between 1 and 4.")
 
+def second_floor():
+    print(f"{blue}\n\nSecond floor")
+
+    print(f"{white}After you went to the bathroom seens like there's anyone up here")
+    print(f"{white}You can to see a hall way and a door in the end.")
+
+    print(f"\n{cyan}What will you do?")
+    print(f"{cyan}1. Cheack the door")
+    print(f"{cyan}2. Inventory")
+    print(f"{cyan}3. come back")
+    
+    choice = input(f"\n{cyan}Enter your choice (1-3): ")
+
+    if choice == '1':
+        if "key" in inventory:
+            print(f"\n&&&")
+        else:
+            print(f"\n{white}The door's looked you need a key to open it.")
+            return
+
+
 def first_room(): # when u go cheack the bedrooms first ill always 'auto' cheack the first room and then the second
 
     clean_terminal()
 
     print(f"{blue}Inside of the house - first bedroom\n\n")
 
-    print(f"{white}You went inside the first bedroom and didn't see anything useful, only a key on the bed.")
-
-    take_key = "" # dont add anything here to make whats in the under line
-    while take_key not in ['y', 'n', 'yes', 'no']: # if the anwer aint these options it wont work
-        take_key = input(f"\n{cyan}Take the key? (y/n or yes/no): ").lower() # to make a loop till the anwer be right
-    
-    if take_key == 'y' or take_key == 'yes':
-        print(f"\n{red}It was a trap! A hand under the bed grabs your leg and pulls you under. All that remains of you is a pool of blood.")
-        print(f"\n{red}GAME OVER")
-        print("\033[?25h")
-        sys.exit() # End the game here
-    elif take_key == 'n' or take_key == 'no':
-        print(f"\n{white}It looks too weird, why would a key be on the bed? You decide to change rooms.")
+    if "key" in inventory:
+        print(f"{white}After to what you did with the hand it's better just go to the other room")
         time.sleep(3)
-        return
+        second_room()
     else:
-        print(f"{red}Please enter 'y/n' or 'yes/no'.")  # If the input is invalid, keep looping
+        print(f"{white}You went inside the first bedroom and didn't see anything useful, only a key on the bed.")
+
+        take_key = "" # dont add anything here to make whats in the under line
+        while take_key not in ['y', 'n', 'yes', 'no']: # if the anwer aint these options it wont work
+            take_key = input(f"\n{cyan}Take the key? (y/n or yes/no): ").lower() # to make a loop till the anwer be right
+        
+        if take_key == 'y' or take_key == 'yes':
+            if "knife" in inventory:
+                print(f"\n{white}A hand under the bed grabs your leg, but then you used the knife to stabed it and took the key")
+                inventory.append("key")
+                return
+            else:
+                print(f"\n{red}It was a trap! A hand under the bed grabs your leg and pulls you under. All that remains of you is a pool of blood.")
+                print(f"\n{red}GAME OVER")
+                print("\033[?25h")
+            sys.exit() # End the game here
+        elif take_key == 'n' or take_key == 'no':
+            print(f"\n{white}It looks too weird, why would a key be on the bed? You decide to change rooms.")
+            time.sleep(3)
+            return
+        else:
+            print(f"{red}Please enter 'y/n' or 'yes/no'.")  # If the input is invalid, keep looping
 
 def second_room(): # when u cheack the bedrooms after u cheack the first 
 
@@ -158,6 +194,8 @@ def bathroom_hide(): # when ur in the bathroom and u gotta hide to dont die
             print(f"{magenta}1. behind the sink")
             print(f"{magenta}2. behind the door")
             print(f"{magenta}3. behind the body")
+
+            went.append("bathroom")
 
             choice = input(f"{magenta}Enter your choice (1-3): ")
 
@@ -295,7 +333,7 @@ def game():
             print(f"\n{white}You shout for help, but there’s no response. The silence is eerie. You start to feel uneasy about your decision.")
         elif choice == '3':
             print(f"\n{white}You decide it's too dangerous and leave, heading back home. But deep down, you feel guilty for not helping your friend.")
-            print(f"\n{blue}End game(1/&)")
+            print(f"\n{blue}End game(1/2)")
             print("\033[?25h")
             sys.exit()  # Exit the game or scenario
         elif choice == '4':
