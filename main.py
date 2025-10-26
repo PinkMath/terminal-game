@@ -34,6 +34,7 @@ def clean_terminal():
 
 
 def inside_house(): # After entering inside the house through the window
+    went.append("start")
 
     clean_terminal()
 
@@ -73,6 +74,8 @@ def inside_house(): # After entering inside the house through the window
             print(f"{red}Invalid choice, please select between 1 and 4.")
 
 def second_floor():
+    clean_terminal()
+
     print(f"{blue}\n\nSecond floor")
 
     print(f"{white}After you went to the bathroom seens like there's anyone up here")
@@ -87,10 +90,41 @@ def second_floor():
 
     if choice == '1':
         if "key" in inventory:
-            print(f"\n&&&")
+            print(f"\n{white}Inside of the room you see your friend arrested and unconscious")
+            print(f"\n{white}After free him he still unconsvious, so you deside to carry him")
+            print(f"\n{white}You see a giant man holding a knife in the end of the hall way")
+            print(f"\n{white}You only can to feel fear looking at him. You realise there's a window behinde you.")
+
+            print(f"{cyan}\nWhat do you what do:")
+            print(f"{cyan}1. Try to pass the man")
+            print(f"{cyan}2. Jump through the window")
+
+            choice = input(f"{cyan}Enter between (1-2): ")
+
+            if choice == '1':
+                print(f"\n{white}You tighten your grip on your friend and start running toward the man.")
+                print(f"{white}You closed your eyes hoping for the best, after pass him you look back and hear him saying {red}'bye'{white}.")
+                print(f"{white}You see as well that his knife's missing and then you feel something warm on your hand")
+                print(f"{white}It's your friend's blood, you keeped running until get in car to leave of this house")
+                print(f"{white}You escape into the cold night, you drove to the hospital, hoping to your friend survive.")
+                print(f"{white}After 2 weeks your friend's good and now you're telling to him all what happened and laughing about it.") 
+                print(f"\n{blue}End (2/3) - good ending")
+                win()
+            elif choice == '2':
+                print(f"\n{white}You look back at the window, fear gripping your chest.")
+                print(f"{white}Without thinking twice, you hold your friend tight and run toward it.")
+                print(f"{white}The glass shatters as you both crash through, the freezing air hitting your faces.")
+                print(f"{white}For a second, you feel free—until you realize how high the fall is.")
+                print(f"{white}You hit the ground hard. Pain shoots through your body. You can’t move.")
+                print(f"{white}You look at your friend beside you. He’s not breathing.")
+                print(f"{white}Your vision starts fading as the sound of the rain grows distant.")
+                print(f"{white}The last thing you see is the giant man looking out the broken window above, silently watching.")
+                print(f"\n{red}End (3/3) - bad ending")
+                win()
+
+                
         else:
             print(f"\n{white}The door's looked you need a key to open it.")
-            return
 
 
 def first_room(): # when u go cheack the bedrooms first ill always 'auto' cheack the first room and then the second
@@ -114,20 +148,27 @@ def first_room(): # when u go cheack the bedrooms first ill always 'auto' cheack
             if "knife" in inventory:
                 print(f"\n{white}A hand under the bed grabs your leg, but then you used the knife to stabed it and took the key")
                 inventory.append("key")
-                return
+                time.sleep(3)
+                inside_house()
             else:
                 print(f"\n{red}It was a trap! A hand under the bed grabs your leg and pulls you under. All that remains of you is a pool of blood.")
                 print(f"\n{red}GAME OVER")
                 print("\033[?25h")
-            sys.exit() # End the game here
+                dead() # End the game here
+
         elif take_key == 'n' or take_key == 'no':
-            print(f"\n{white}It looks too weird, why would a key be on the bed? You decide to change rooms.")
-            time.sleep(3)
-            return
+            if "first_room" in went:
+                return
+            else:
+                print(f"\n{white}It looks too weird, why would a key be on the bed? You decide to change rooms.")
+                time.sleep(3)
+                return
         else:
             print(f"{red}Please enter 'y/n' or 'yes/no'.")  # If the input is invalid, keep looping
 
 def second_room(): # when u cheack the bedrooms after u cheack the first 
+
+    went.append("first_room")
 
     clean_terminal()
 
@@ -202,11 +243,11 @@ def bathroom_hide(): # when ur in the bathroom and u gotta hide to dont die
             if choice == '1':
                 print(f"\n{red}You tried to hide behind the sink, but even with the place dark he could see you. He killed you.")
                 print(f"\n{red}GAME OVER")
-                sys.exit() # to exit of the game
+                dead() # to exit of the game
             elif choice == '2':
                 print(f"\n{red}You tried to hide behind the door, he didn't see you at first but when he was about to live he saw something behind the door. He broke your neck")
                 print(f"\n{red}GAME OVER")
-                sys.exit() # to exit of the game
+                dead() # to exit of the game
             elif choice == '3':
                 print(f"\n{white}You tried to hide behind the body in the corner, you found out where the smell's comming from.")
                 print(f"{white}After all he didn't see you thinking it was just another body")
@@ -306,6 +347,7 @@ def inside_stable(): # inside of the stable
                     
 
 def game():
+
     cursor_hidden()
     clean_terminal()
     print(f"{blue}Outside of the house\n\n")
@@ -315,41 +357,57 @@ def game():
     print(f"{green}Should you enter the house to look for him?\n")
 
     while True:
+        if "start" in went:
+            print(f"\n{cyan}What will you do?")
+            print(f"{cyan}1. Try to find another way in (through a window, etc.)")
+            print(f"{cyan}2. Inventory")
+            print(f"{cyan}3. Behind the house")
 
-        print(f"\n{cyan}What will you do?")
-        print(f"{cyan}1. Enter the house to look for your friend")
-        print(f"{cyan}2. Call for help and wait outside")
-        print(f"{cyan}3. Leave the house and go back home")
-        print(f"{cyan}4. Try to find another way in (through a window, etc.)")
-        print(f"{cyan}5. Inventory")
-        print(f"{cyan}6. Behind the house")
-        print(f"{cyan}7. Quit the game")
+            choice = input(f"{cyan}Enter your choice (1-7): ")
 
-        choice = input(f"{cyan}Enter your choice (1-7): ")
-
-        if choice == '1':
-            print(f"\n{white}The front door's stuck. You can't get inside that way.")
-        elif choice == '2':
-            print(f"\n{white}You shout for help, but there’s no response. The silence is eerie. You start to feel uneasy about your decision.")
-        elif choice == '3':
-            print(f"\n{white}You decide it's too dangerous and leave, heading back home. But deep down, you feel guilty for not helping your friend.")
-            print(f"\n{blue}End game(1/2)")
-            print("\033[?25h")
-            sys.exit()  # Exit the game or scenario
-        elif choice == '4':
-            print(f"\n{white}You look around the house for another way in. You spot an old, cracked window. You decide to climb through it.")
-            time.sleep(3)
-            inside_house()  # Call the function to handle the new inside scenario
-        elif choice == '5':
-            show_inventory()
-        elif choice == '6':
-            back_house()
-        elif choice == '7':
-            print(f"\n{red}You quit the game. Goodbye!")
-            print("\033[?25h")
-            sys.exit()  # End the game
+            if choice == '1':
+                inside_house()  # Call the function to handle the new inside scenario
+            elif choice == '2':
+                show_inventory()
+            elif choice == '3':
+                back_house()
+            else:
+                print(f"{red}Invalid choice, please select between 1 and 3.")
         else:
-            print(f"{red}Invalid choice, please select between 1 and 7.")
+            print(f"\n{cyan}What will you do?")
+            print(f"{cyan}1. Enter the house to look for your friend")
+            print(f"{cyan}2. Call for help and wait outside")
+            print(f"{cyan}3. Leave the house and go back home")
+            print(f"{cyan}4. Try to find another way in (through a window, etc.)")
+            print(f"{cyan}5. Inventory")
+            print(f"{cyan}6. Behind the house")
+            print(f"{cyan}7. Quit the game")
+
+            choice = input(f"{cyan}Enter your choice (1-7): ")
+
+            if choice == '1':
+                print(f"\n{white}The front door's stuck. You can't get inside that way.")
+            elif choice == '2':
+                print(f"\n{white}You shout for help, but there’s no response. The silence is eerie. You start to feel uneasy about your decision.")
+            elif choice == '3':
+                print(f"\n{white}You decide it's too dangerous and leave, heading back home. But deep down, you feel guilty for not helping your friend.")
+                print(f"\n{blue}End (1/3) - coward")
+                print("\033[?25h")
+                win()  # Exit the game or scenario
+            elif choice == '4':
+                print(f"\n{white}You look around the house for another way in. You spot an old, cracked window. You decide to climb through it.")
+                time.sleep(3)
+                inside_house()  # Call the function to handle the new inside scenario
+            elif choice == '5':
+                show_inventory()
+            elif choice == '6':
+                back_house()
+            elif choice == '7':
+                print(f"\n{red}You quit the game. Goodbye!")
+                print("\033[?25h")
+                sys.exit()  # End the game
+            else:
+                print(f"{red}Invalid choice, please select between 1 and 7.")
 
 def show_inventory():
     # show the inventory
@@ -360,6 +418,40 @@ def show_inventory():
     else:
         print(f"\n{red}Your inventory's empty")
 
-# start the game
+
+def dead():
+    # if u die
+    print(f"\n{blue}1. Revive")
+    print(f"{blue}2. Start over")
+    print(f"{blue}3. Leave of the game")
+    choice = input(f"\n{blue}Enter (1-3): ")
+
+    if choice == '1':
+        game()
+    elif choice == '2':
+        inventory.clear()
+        went.clear()
+        game()
+    elif choice == '3':
+        sys.exit()
+    else:
+        print(f"\n{white}Enter only between 1-3")
+
+def win():
+    # if u die
+    print(f"{blue}1. Start over")
+    print(f"{blue}2. Leave of the game")
+    choice = input(f"\n{blue}Enter (1-3): ")
+
+    if choice == '1':
+        inventory.clear()
+        went.clear()
+        game()
+    elif choice == '2':
+        sys.exit()
+    else:
+        print(f"\n{white}Enter only between 1-2")
+
+# start the game game()
 game()
 
