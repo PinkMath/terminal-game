@@ -123,6 +123,10 @@ def second_floor():
                 win()
 
                 
+        elif choice == '2':
+            show_inventory()
+        elif choice == '3':
+            inside_house()
         else:
             print(f"\n{white}The door's looked you need a key to open it.")
 
