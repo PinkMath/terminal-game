@@ -316,7 +316,7 @@ def inside_stable(): # inside of the stable
     while True:
         print(f"\n{cyan}1. table")
         print(f"{cyan}2. weapons")
-        print(f"{cyan}3. inventroy")
+        print(f"{cyan}3. inventory")
         print(f"{cyan}4. come back")
         
         choice = input(f"{cyan}What do you wanna do (1-4):")
